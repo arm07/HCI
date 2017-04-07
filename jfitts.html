@@ -1,0 +1,258 @@
+<html>
+<head>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+	
+<style>
+
+</style>
+
+<script>
+
+	
+	var xcoordinateArray=[];
+	var ycoordinateArray=[];
+	var timeArry=[];
+	var totalTime=[];
+	var distance=[];
+	var totalDistance=0;
+	var index=0;
+	var fillingColor;
+	var dist=100;
+	var width=20;
+	var dist2=150;
+	var dist3=200;
+	var width2=30;
+	var dataVals=[[0.698132,"1"],[1.39626,"8"],[2.0944,"6"],[2.79253,"4"],[3.49066,"2"],[4.18879,"9"],[4.88692,"7"],[5.58505,"5"],[6.28319,"3"]];
+	
+	var page=d3.select("body").append("svg");
+		page.attr("width",600).attr("height",600)
+		.style("border", "4px solid black");
+	
+	var circles=page.selectAll("circle")
+		.data(dataVals)
+		.enter()
+		.append("circle");
+	
+	var circleGroup=circles.attr("cx", function (d,i) { return 300+ dist* Math.cos(d[0]);})
+			.attr("cy", function (d,i) { return 300+ dist* Math.sin(d[0]);})			
+			.attr("r", width)
+			.attr("id",function (d,i) {return d[1];})
+			//.on("mouseover",handleMouseOver)
+			//.on("mouseout", handleMouseOut)
+			.attr("stroke","black")
+			.style("fill", function(d,i){
+				if(d[1]=="1")
+					fillingColor="black";
+				else
+					fillingColor="red";
+				return fillingColor});
+			
+	circleGroup.on("click", clickCircle);
+	
+	var button=d3.select("body")
+				.append("input")
+				.attr("type","button")
+				.attr("name","DistanceVsTime")
+				.attr("value","DistanceVsTime")			
+				.on("click",function(d)
+					{
+					for(var i=1;i<9;i++)
+					{ 
+						var xSquare=(xcoordinateArray[i+1]-xcoordinateArray[i])*(xcoordinateArray[i+1]-xcoordinateArray[i]);
+						var ySquare=(ycoordinateArray[i+1]-ycoordinateArray[i])*(ycoordinateArray[i+1]-ycoordinateArray[i]);
+						distance[i]= Math.sqrt(xSquare+ySquare);
+						totalTime[i]=timeArry[i+1]-timeArry[i];
+					}
+					for(var i=1;i<9;i++)
+					{ 
+						totalDistance=+distance[i];
+					}
+					//document.getElementById("textBox").innerHTML=totalDistance;
+					for(var i=1;i<10;i++){
+					var tab=document.getElementById("Distancedata");
+					var row=tab.insertRow(0);
+					var cell1=row.insertCell(0);
+					var cell2=row.insertCell(1);
+					
+					if(i==9)
+					{
+						cell1.innerHTML="DistanceBetweenNodes";
+						cell2.innerHTML="Time(in ms)";
+					}
+					else{
+						cell1.innerHTML=distance[i];
+						cell2.innerHTML=totalTime[i];
+					}					
+					}			
+					});
+	
+	
+	var button2=d3.select("body")
+				.append("input")
+				.attr("type","button")
+				.attr("name","Transform2")
+				.attr("value","Transform2")			
+				.on("click",function(d){
+				index=0;
+				page.selectAll("circle").remove();
+				
+				//var radius=document.getElementById("radius").value;
+				//var amplitude=document.getElementById("Amplitude").value;
+				page.selectAll("circle")
+				.data(dataVals)
+				.enter()
+				.append("circle")
+				.attr("cx",function(d,i) {return 300+dist2*Math.cos(d[0]); })
+				.attr("cy",function(d,i) {return 300+dist2*Math.sin(d[0]); })
+				.attr("r",width)
+				.attr("id",function(d,i){ test=d[1]; return d[1];})
+				.style("fill",function(d,i){ var fillingcolor; if(d[1]=="1") fillingcolor="black"; else fillingcolor="red"; return fillingcolor})
+				.on("click", clickCircle);
+	
+			});
+	var button3=d3.select("body")
+				.append("input")
+				.attr("type","button")
+				.attr("name","Transform3")
+				.attr("value","Transform3")			
+				.on("click",function(d){
+				index=0;
+				page.selectAll("circle").remove();
+				
+				//var radius=document.getElementById("radius").value;
+				//var amplitude=document.getElementById("Amplitude").value;
+				page.selectAll("circle")
+				.data(dataVals)
+				.enter()
+				.append("circle")
+				.attr("cx",function(d,i) {return 300+dist3*Math.cos(d[0]); })
+				.attr("cy",function(d,i) {return 300+dist3*Math.sin(d[0]); })
+				.attr("r",width)
+				.attr("id",function(d,i){ test=d[1]; return d[1];})
+				.style("fill",function(d,i){ var fillingcolor; if(d[1]=="1") fillingcolor="black"; else fillingcolor="red"; return fillingcolor})
+				.on("click", clickCircle);
+	
+			});
+			
+	var button4=d3.select("body")
+				.append("input")
+				.attr("type","button")
+				.attr("name","Transform4")
+				.attr("value","Transform4")			
+				.on("click",function(d){
+				index=0;
+				page.selectAll("circle").remove();
+				
+				//var radius=document.getElementById("radius").value;
+				//var amplitude=document.getElementById("Amplitude").value;
+				page.selectAll("circle")
+				.data(dataVals)
+				.enter()
+				.append("circle")
+				.attr("cx",function(d,i) {return 300+dist*Math.cos(d[0]); })
+				.attr("cy",function(d,i) {return 300+dist*Math.sin(d[0]); })
+				.attr("r",width2)
+				.attr("id",function(d,i){ test=d[1]; return d[1];})
+				.style("fill",function(d,i){ var fillingcolor; if(d[1]=="1") fillingcolor="black"; else fillingcolor="red"; return fillingcolor})
+				.on("click", clickCircle);
+	
+			});
+			
+	var button5=d3.select("body")
+				.append("input")
+				.attr("type","button")
+				.attr("name","Transform5")
+				.attr("value","Transform5")			
+				.on("click",function(d){
+				index=0;
+				page.selectAll("circle").remove();
+				
+				//var radius=document.getElementById("radius").value;
+				//var amplitude=document.getElementById("Amplitude").value;
+				page.selectAll("circle")
+				.data(dataVals)
+				.enter()
+				.append("circle")
+				.attr("cx",function(d,i) {return 300+dist2*Math.cos(d[0]); })
+				.attr("cy",function(d,i) {return 300+dist2*Math.sin(d[0]); })
+				.attr("r",width2)
+				.attr("id",function(d,i){ test=d[1]; return d[1];})
+				.style("fill",function(d,i){ var fillingcolor; if(d[1]=="1") fillingcolor="black"; else fillingcolor="red"; return fillingcolor})
+				.on("click", clickCircle);
+	
+			});
+	var button5=d3.select("body")
+				.append("input")
+				.attr("type","button")
+				.attr("name","Transform6")
+				.attr("value","Transform6")			
+				.on("click",function(d){
+				index=0;
+				page.selectAll("circle").remove();
+				
+				//var radius=document.getElementById("radius").value;
+				//var amplitude=document.getElementById("Amplitude").value;
+				page.selectAll("circle")
+				.data(dataVals)
+				.enter()
+				.append("circle")
+				.attr("cx",function(d,i) {return 300+dist3*Math.cos(d[0]); })
+				.attr("cy",function(d,i) {return 300+dist3*Math.sin(d[0]); })
+				.attr("r",width2)
+				.attr("id",function(d,i){ test=d[1]; return d[1];})
+				.style("fill",function(d,i){ var fillingcolor; if(d[1]=="1") fillingcolor="black"; else fillingcolor="red"; return fillingcolor})
+				.on("click", clickCircle);
+	
+			});
+				
+	function handleMouseOver(d,i){	
+		d3.select(this)
+		.attr("stroke-width", 2)
+		.attr("stroke", "black")
+		.style("fill","black");
+		 page.append("text").attr({})
+	}
+	
+	function handleMouseOut(d,i) {  
+            d3.select(this).style("fill", "red");
+	}
+	
+	function clickCircle(){
+		//var index=0;
+		if(index<10){
+				var coordinates = [0,0];
+				d3.select(this).style("fill","black");
+				coordinates = d3.mouse(this);
+				//time=Date.now();
+				timeArry[index]=Date.now();
+				var x = coordinates[0];
+				var y = coordinates[1];	
+				xcoordinateArray[index]=x;
+				ycoordinateArray[index]=y;
+				//coordinateArray.push(coordinates);		
+			//console.log(coordinateArray);
+			//document.write(coordinateArray);
+			}
+			index++;
+			allcircles=page.selectAll("circle");
+			allcircles.each(function(d,i)
+			{
+				var tempId=this.getAttribute("id");
+				var indexId=index.toString();
+				if(tempId==indexId)
+					this.style.fill="black";
+				else
+					this.style.fill="red";
+			}	
+			)
+//<input type="number" id="Amplitude" value=50 /><br>			
+	}
+</script>
+	
+	<table id="Distancedata"></table>
+	
+</body>
+ </html>
